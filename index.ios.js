@@ -12,14 +12,12 @@ import {
   Text,
   View
 } from 'react-native';
-import MyImage from './js/pics';
+import Day1 from './js/day1';
 
 export default class MyApp extends Component {
   render() {
     return (
-      <View style={styles.container}>
-        <MyImage/>
-      </View>
+       <Day1/>
     );
   }
 }

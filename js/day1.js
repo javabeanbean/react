@@ -7,18 +7,15 @@ var screenWidth = Dimensions.get('window').width;
 
 export default class Day1 extends Component {
     render() {
-        var shapes = new Array(6).fill().map((d, i) => {
-            var path = Path().moveTo(0, i * 50 ).lineTo(screenWidth, i * 50 );
-            return <Shape d={path} key={i} stroke='white' strokeWidth={1} strokeDash={[10, 5]}/>;
-        });
+        var path=Path().moveTo(50,0).arc(0,90,45);
 
         return (
             <View style={{
-                backgroundColor: 'green',
+                backgroundColor: 'white',
                 flex: 1
             }}>
             <Surface width={screenWidth} height={300}>
-           {shapes}
+           <Shape d={path} stroke='black' strokeWidth={1} />
             </Surface>
             </View>
         );
