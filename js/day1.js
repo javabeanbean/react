@@ -10,7 +10,8 @@ export default class Day1 extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            showText: true
+            running: true,
+            time: 0
         };
 
 
@@ -37,55 +38,60 @@ export default class Day1 extends Component {
         var right_font_x = screenWidth - offsetX - 20 / 2;
         var font_y = surfaceHeight / 2 - 10 / 2;
         return (
-            <View style={ { backgroundColor: 'white', flex: 1 } }>
+            <View style={ {
+                backgroundColor: 'white',
+                flex: 1
+            }}>
               <View style={ styles.titleContainer }>
                 <Text style={ styles.title }>
                   mywatch
                 </Text>
               </View>
               <View style={ styles.timerContainer }>
+              <Text style={styles.smallTimer}>00:99.69</Text>
+              <Text style={styles.bigTimer}>00:99.99</Text>
               </View>
               <View style={ styles.mainContainer }>
                 <Surface
-                         width={ screenWidth }
-                         height={ surfaceHeight }>
+            width={ screenWidth }
+            height={ surfaceHeight }>
                   <Group>
                     <Shape
-                           d={ leftCircle }
-                           stroke='black'
-                           strokeWidth={ 1 } />
+            d={ leftCircle }
+            stroke='black'
+            strokeWidth={ 1 } />
                     <ART.Text
-                              strokeWidth={ 1 }
-                              stroke='black'
-                              font="10px Heiti SC"
-                              fill='black'
-                              x={ left_font_x }
-                              y={ font_y }>
+            strokeWidth={ 1 }
+            stroke='black'
+            font="10px Heiti SC"
+            fill='black'
+            x={ left_font_x }
+            y={ font_y }>
                       计次
                     </ART.Text>
                   </Group>
                   <Group>
                     <Shape
-                           d={ rightCircle }
-                           stroke='black'
-                           strokeWidth={ 1 } />
+            d={ rightCircle }
+            stroke='black'
+            strokeWidth={ 1 } />
                     <ART.Text
-                              strokeWidth={ 1 }
-                              stroke='black'
-                              font="10px Heiti SC"
-                              fill='black'
-                              x={ right_font_x }
-                              y={ font_y }>
+            strokeWidth={ 1 }
+            stroke='black'
+            font="10px Heiti SC"
+            fill='black'
+            x={ right_font_x }
+            y={ font_y }>
                       启动
                     </ART.Text>
                   </Group>
                 </Surface>
                 <View style={ styles.resultContainer }>
                   <FlatList
-                            data={ res }
-                            renderItem={ ({item}) => {
-                                             return (
-                                                 <View style={ styles.resultItem }>
+            data={ res }
+            renderItem={ ({item}) => {
+                return (
+                    <View style={ styles.resultItem }>
                                                    <Text>
                                                      { item.name }
                                                    </Text>
@@ -93,14 +99,14 @@ export default class Day1 extends Component {
                                                      { item.value }
                                                    </Text>
                                                  </View>
-                                                 );
-                                         } } />
+                );
+            }} />
                 </View>
               </View>
             </View>
 
 
-            );
+        );
     }
 }
 
@@ -114,7 +120,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         color: 'black',
-    // textAlign: 'center',
+    // textAlign: ,
     //do not work
     // textAlignVertical: 'bottom',
     // includeFontPadding :false
@@ -122,7 +128,19 @@ const styles = StyleSheet.create({
     timerContainer: {
         height: 120,
         borderBottomWidth: 1,
-        borderTopWidth: 1
+        borderTopWidth: 1,
+        justifyContent: 'center'
+    },
+    smallTimer: {
+        paddingRight: 80,
+        fontSize: 15,
+        textAlign: 'right',
+        color: 'black'
+    },
+    bigTimer: {
+        fontSize: 60,
+        textAlign: 'center',
+        color: 'black'
     },
     mainContainer: {
         flex: 1
