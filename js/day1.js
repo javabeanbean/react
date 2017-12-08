@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
-
-import { StyleSheet, Text, View, FlatList, ART } from 'react-native';
-const {Surface, Shape, Path, Group} = ART;
+import { Alert, StyleSheet, Text, View, FlatList, TouchableHighlight } from 'react-native';
+import Svg, { Circle, G, Text as SvgText } from 'react-native-svg';
 var Dimensions = require('Dimensions');
 var screenWidth = Dimensions.get('window').width;
 var screenHeight = Dimensions.get('window').height;
+
+function timeFormat (time) {
+   var sec=time/1000;
+   var min=sec/60;
+   
+}
 
 export default class Day1 extends Component {
     constructor(props) {
@@ -13,9 +18,9 @@ export default class Day1 extends Component {
             running: true,
             time: 0
         };
-
-
     }
+
+
     componentDidMount() {}
     render() {
         var res = [{
@@ -27,71 +32,78 @@ export default class Day1 extends Component {
         }];
         const offsetX = 100,
             radius = 50,
-            surfaceHeight = 120,
-            offsetY = (surfaceHeight - radius * 2) / 2;
-        //android need only one arc while ios need two
-        //两点及半径决定一个圆
-        var leftCircle = Path().moveTo(offsetX, offsetY).arc(0, radius * 2, radius).arc(0, -radius * 2, radius);
-        var rightCircle = Path().moveTo(screenWidth - offsetX, offsetY).arc(0, radius * 2, radius).arc(0, -radius * 2, radius);
+            svgHeight = 120,
+            fontSize = 20,
+            leftFont = '计次',
+            rightFont = '启动';
         //20和10是根据font 10px和字数取的大概宽高
-        var left_font_x = offsetX - 20 / 2;
-        var right_font_x = screenWidth - offsetX - 20 / 2;
-        var font_y = surfaceHeight / 2 - 10 / 2;
+        var left_font_x = offsetX - fontSize * leftFont.length / 2;
+        var right_font_x = screenWidth - offsetX - fontSize * rightFont.length / 2;
+        var font_y = svgHeight / 2 - fontSize / 2;
         return (
-            <View style={ {
-                backgroundColor: 'white',
-                flex: 1
-            }}>
+            <View style={ { backgroundColor: 'white', flex: 1 } }>
               <View style={ styles.titleContainer }>
                 <Text style={ styles.title }>
                   mywatch
                 </Text>
               </View>
               <View style={ styles.timerContainer }>
-              <Text style={styles.smallTimer}>00:99.69</Text>
-              <Text style={styles.bigTimer}>00:99.99</Text>
+                <Text style={ styles.smallTimer }>
+                  00:99.69
+                </Text>
+                <Text style={ styles.bigTimer }>
+                  {}
+                </Text>
               </View>
               <View style={ styles.mainContainer }>
-                <Surface
-            width={ screenWidth }
-            height={ surfaceHeight }>
-                  <Group>
-                    <Shape
-            d={ leftCircle }
-            stroke='black'
-            strokeWidth={ 1 } />
-                    <ART.Text
-            strokeWidth={ 1 }
-            stroke='black'
-            font="10px Heiti SC"
-            fill='black'
-            x={ left_font_x }
-            y={ font_y }>
-                      计次
-                    </ART.Text>
-                  </Group>
-                  <Group>
-                    <Shape
-            d={ rightCircle }
-            stroke='black'
-            strokeWidth={ 1 } />
-                    <ART.Text
-            strokeWidth={ 1 }
-            stroke='black'
-            font="10px Heiti SC"
-            fill='black'
-            x={ right_font_x }
-            y={ font_y }>
-                      启动
-                    </ART.Text>
-                  </Group>
-                </Surface>
+                <Svg
+                     height={ svgHeight }
+                     width={ screenWidth }>
+                  <G onPress={ () => {
+                                          Alert.alert('message')
+                                      } }>
+                    <Circle
+                            cx={ offsetX }
+                            cy={ svgHeight / 2 }
+                            r={ radius }
+                            stroke='black'
+                            fill='none'
+                            strokeWidth='1'
+                             />
+                    <SvgText
+                             fontSize={ fontSize.toString() }
+                             x={ left_font_x }
+                             y={ font_y }>
+                      { leftFont }
+                    </SvgText>
+                  </G>
+                  <G onPress={ () => {
+                                          setInterval(()=>{
+                                            this.setState((previousState)=>({time:previousState.time+1}));
+                                          }, 10);
+                                      } }>
+                    <Circle
+                            cx={ screenWidth-offsetX }
+                            cy={ svgHeight / 2 }
+                            r={ radius }
+                            stroke='black'
+                            fill='none'
+                            strokeWidth='1'
+                             />
+                    <SvgText
+                             fontSize={ fontSize.toString() }
+                             x={ right_font_x }
+                             y={ font_y }>
+                      { rightFont }
+                    </SvgText>
+                  </G>
+                </Svg>
                 <View style={ styles.resultContainer }>
                   <FlatList
-            data={ res }
-            renderItem={ ({item}) => {
-                return (
-                    <View style={ styles.resultItem }>
+                            data={ res }
+                            renderItem={ ({item}) => {
+                                             return (
+                                                 <View style={ styles.resultItem }>
                                                    <Text>
                                                      { item.name }
                                                    </Text>
@@ -99,14 +111,14 @@ export default class Day1 extends Component {
                                                      { item.value }
                                                    </Text>
                                                  </View>
-                );
-            }} />
+                                                 );
+                                         } } />
                 </View>
               </View>
             </View>
 
 
-        );
+            );
     }
 }
 
