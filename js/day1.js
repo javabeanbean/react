@@ -5,10 +5,18 @@ var Dimensions = require('Dimensions');
 var screenWidth = Dimensions.get('window').width;
 var screenHeight = Dimensions.get('window').height;
 
-function timeFormat (time) {
-   var sec=time/1000;
-   var min=sec/60;
-   
+function timeFormat(time) {
+    var msec = Math.floor((time % 1000) / 10);
+    var sec = Math.floor(time / 1000) % 60;
+    var min = Math.floor(Math.floor(time / 1000) / 60);
+    var coverPosition=function (num) {
+       if (Math.floor(num/10)===0) {
+        return '0'+num;
+       }else{
+        return num;
+       }
+    }
+    return coverPosition(min) + ':' + coverPosition(sec) + '.' + coverPosition(msec);
 }
 
 export default class Day1 extends Component {
@@ -21,15 +29,11 @@ export default class Day1 extends Component {
     }
 
 
-    componentDidMount() {}
+    componentWillMount() {
+      console.log('componentDidMount called');
+      this.res=[{name:1,value:2}];
+    }
     render() {
-        var res = [{
-            name: 1,
-            value: 1
-        }, {
-            name: 2,
-            value: 2
-        }];
         const offsetX = 100,
             radius = 50,
             svgHeight = 120,
@@ -40,6 +44,7 @@ export default class Day1 extends Component {
         var left_font_x = offsetX - fontSize * leftFont.length / 2;
         var right_font_x = screenWidth - offsetX - fontSize * rightFont.length / 2;
         var font_y = svgHeight / 2 - fontSize / 2;
+        console.log(this.res.length);
         return (
             <View style={ { backgroundColor: 'white', flex: 1 } }>
               <View style={ styles.titleContainer }>
@@ -49,10 +54,10 @@ export default class Day1 extends Component {
               </View>
               <View style={ styles.timerContainer }>
                 <Text style={ styles.smallTimer }>
-                  00:99.69
+                  { timeFormat(this.state.time) }
                 </Text>
                 <Text style={ styles.bigTimer }>
-                  {}
+                  { timeFormat(this.state.time) }
                 </Text>
               </View>
               <View style={ styles.mainContainer }>
@@ -60,16 +65,15 @@ export default class Day1 extends Component {
                      height={ svgHeight }
                      width={ screenWidth }>
                   <G onPress={ () => {
-                                          Alert.alert('message')
-                                      } }>
+                    this.res.push({name:'计次'+(this.res.length+1),value:timeFormat(this.state.time) });
+                               } }>
                     <Circle
                             cx={ offsetX }
                             cy={ svgHeight / 2 }
                             r={ radius }
                             stroke='black'
                             fill='none'
-                            strokeWidth='1'
-                             />
+                            strokeWidth='1' />
                     <SvgText
                              fontSize={ fontSize.toString() }
                              x={ left_font_x }
@@ -78,18 +82,19 @@ export default class Day1 extends Component {
                     </SvgText>
                   </G>
                   <G onPress={ () => {
-                                          setInterval(()=>{
-                                            this.setState((previousState)=>({time:previousState.time+1}));
-                                          }, 10);
-                                      } }>
+                                   setInterval(() => {
+                                       this.setState((previousState) => ({
+                                           time: previousState.time + 10
+                                       }));
+                                   }, 10);
+                               } }>
                     <Circle
-                            cx={ screenWidth-offsetX }
+                            cx={ screenWidth - offsetX }
                             cy={ svgHeight / 2 }
                             r={ radius }
                             stroke='black'
                             fill='none'
-                            strokeWidth='1'
-                             />
+                            strokeWidth='1' />
                     <SvgText
                              fontSize={ fontSize.toString() }
                              x={ right_font_x }
@@ -100,7 +105,7 @@ export default class Day1 extends Component {
                 </Svg>
                 <View style={ styles.resultContainer }>
                   <FlatList
-                            data={ res }
+                            data={ this.res }
                             renderItem={ ({item}) => {
                                              return (
                                                  <View style={ styles.resultItem }>
