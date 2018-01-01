@@ -9,12 +9,12 @@ function timeFormat(time) {
     var msec = Math.floor((time % 1000) / 10);
     var sec = Math.floor(time / 1000) % 60;
     var min = Math.floor(Math.floor(time / 1000) / 60);
-    var coverPosition=function (num) {
-       if (Math.floor(num/10)===0) {
-        return '0'+num;
-       }else{
-        return num;
-       }
+    var coverPosition = function(num) {
+        if (Math.floor(num / 10) === 0) {
+            return '0' + num;
+        } else {
+            return num;
+        }
     }
     return coverPosition(min) + ':' + coverPosition(sec) + '.' + coverPosition(msec);
 }
@@ -30,8 +30,8 @@ export default class Day1 extends Component {
 
 
     componentWillMount() {
-      console.log('componentDidMount called');
-      this.res=[{name:1,value:2}];
+        console.log('componentDidMount called');
+        this.res = [];
     }
     render() {
         const offsetX = 100,
@@ -46,7 +46,10 @@ export default class Day1 extends Component {
         var font_y = svgHeight / 2 - fontSize / 2;
         console.log(this.res.length);
         return (
-            <View style={ { backgroundColor: 'white', flex: 1 } }>
+            <View style={ {
+                backgroundColor: 'white',
+                flex: 1
+            }}>
               <View style={ styles.titleContainer }>
                 <Text style={ styles.title }>
                   mywatch
@@ -54,61 +57,66 @@ export default class Day1 extends Component {
               </View>
               <View style={ styles.timerContainer }>
                 <Text style={ styles.smallTimer }>
-                  { timeFormat(this.state.time) }
+                  { timeFormat(this.state.time)}
                 </Text>
                 <Text style={ styles.bigTimer }>
-                  { timeFormat(this.state.time) }
+                  { timeFormat(this.state.time)}
                 </Text>
               </View>
               <View style={ styles.mainContainer }>
                 <Svg
-                     height={ svgHeight }
-                     width={ screenWidth }>
+            height={ svgHeight }
+            width={ screenWidth }>
                   <G onPress={ () => {
-                    this.res.push({name:'计次'+(this.res.length+1),value:timeFormat(this.state.time) });
-                               } }>
+                this.res.push({
+                    name: '计次' + (this.res.length + 1),
+                    value: timeFormat(this.state.time)
+                });
+                this.res = this.res.slice();
+                // FlatList.scrollToEnd();
+            }}>
                     <Circle
-                            cx={ offsetX }
-                            cy={ svgHeight / 2 }
-                            r={ radius }
-                            stroke='black'
-                            fill='none'
-                            strokeWidth='1' />
+            cx={ offsetX }
+            cy={svgHeight / 2}
+            r={ radius }
+            stroke='black'
+            fill='none'
+            strokeWidth='1' />
                     <SvgText
-                             fontSize={ fontSize.toString() }
-                             x={ left_font_x }
-                             y={ font_y }>
+            fontSize={ fontSize.toString()}
+            x={ left_font_x }
+            y={ font_y }>
                       { leftFont }
                     </SvgText>
                   </G>
                   <G onPress={ () => {
-                                   setInterval(() => {
-                                       this.setState((previousState) => ({
-                                           time: previousState.time + 10
-                                       }));
-                                   }, 10);
-                               } }>
+                setInterval(() => {
+                    this.setState((previousState) => ({
+                        time: previousState.time + 10
+                    }));
+                }, 10);
+            }}>
                     <Circle
-                            cx={ screenWidth - offsetX }
-                            cy={ svgHeight / 2 }
-                            r={ radius }
-                            stroke='black'
-                            fill='none'
-                            strokeWidth='1' />
+            cx={screenWidth - offsetX}
+            cy={svgHeight / 2}
+            r={ radius }
+            stroke='black'
+            fill='none'
+            strokeWidth='1' />
                     <SvgText
-                             fontSize={ fontSize.toString() }
-                             x={ right_font_x }
-                             y={ font_y }>
+            fontSize={ fontSize.toString()}
+            x={ right_font_x }
+            y={ font_y }>
                       { rightFont }
                     </SvgText>
                   </G>
                 </Svg>
                 <View style={ styles.resultContainer }>
                   <FlatList
-                            data={ this.res }
-                            renderItem={ ({item}) => {
-                                             return (
-                                                 <View style={ styles.resultItem }>
+            data={ this.res }
+            renderItem={ ({item}) => {
+                return (
+                    <View style={ styles.resultItem }>
                                                    <Text>
                                                      { item.name }
                                                    </Text>
@@ -116,14 +124,14 @@ export default class Day1 extends Component {
                                                      { item.value }
                                                    </Text>
                                                  </View>
-                                                 );
-                                         } } />
+                );
+            }} />
                 </View>
               </View>
             </View>
 
 
-            );
+        );
     }
 }
 
