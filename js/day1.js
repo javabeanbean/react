@@ -24,9 +24,7 @@ export default class Day1 extends Component {
         super(props);
         this.state = {
             running: true,
-            time: 0,
-
-            res:[]
+            time: 0
         };
     }
 
@@ -70,21 +68,14 @@ export default class Day1 extends Component {
             height={ svgHeight }
             width={ screenWidth }>
                   <G onPress={ () => {
-                // this.res.push({
-                //     name: '计次' + (this.res.length + 1),
-                //     value: timeFormat(this.state.time)
-                // });
-                // //产生不同的res实例以便FlatList刷新
-                // this.res = this.res.slice();
-                // // this.flatlist.scrollToIndex({viewPosition:1, index: this.res.length-1});
-                // // this.flatlist.scrollToEnd();
-
-                 this.setState((previousState) => {
-                    previousState.res.push({name:1,value:1});
-                    return {
-                        res: previousState.res.slice()
-                    };
+                this.res.push({
+                    name: '计次' + (this.res.length + 1),
+                    value: timeFormat(this.state.time)
                 });
+                //产生不同的res实例以便FlatList刷新
+                this.res = this.res.slice();
+                // this.flatlist.scrollToIndex({viewPosition:1, index: this.res.length-1});
+                // this.flatlist.scrollToEnd();
             }}>
                     <Circle
             cx={ offsetX }
@@ -124,8 +115,10 @@ export default class Day1 extends Component {
                 </Svg>
                 <View style={ styles.resultContainer }>
                   <FlatList
-            data={ this.state.res }
-              getItemLayout={(data, index) => ( {length: 50, offset: 50 * index, index} )}
+            data={ this.res }
+            //刷新频繁时用getItemLayout会卡
+              // getItemLayout={(data, index) => ( {length: 50, offset: 50 * index, index} )}
+              keyExtractor={(item,index)=>index}
               ref={(flatlist)=>this.flatlist=flatlist}
             renderItem={ ({item}) => {
                 return (
